@@ -1,35 +1,124 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="./assets/img/4geeks.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hello Rigo with Vanilla.js</title>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generador de Cartas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #1a6b3c;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      font-family: Arial, sans-serif;
+    }
 
-    <!-- Fontawesome is our recomended library for icons -->
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
-      integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
-      crossorigin="anonymous"
-    />
-  </head>
-  <body>
-    <!-- Write your HTML code here, you can delete everything withing the body tags -->
-    <div class="container-fluid text-center">
-      <h1 class="mt-5">Hello Rigo!</h1>
-      <img src="./assets/img/rigo-baby.jpg" />
-      <p class="alert alert-warning mt-4">
-        If this text is <b>not</b> centered and <b>yellow</b>, you probably have
-        an error
-      </p>
-      <div class="fixed-bottom p-4">
-        Made with ❤️ by
-        <a href="https://www.4geeksacademy.com">4Geeks Academy</a>
-      </div>
-    </div>
+    #card-label {
+      color: rgba(255,255,255,0.8);
+      font-size: 16px;
+      letter-spacing: 1px;
+    }
 
-    <!-- Do not delete this script tag, this is what connects your HTML with the Javascript code -->
-    <script type="module" src="/app.js"></script>
-  </body>
+    .playing-card {
+      width: 160px;
+      height: 240px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 14px;
+    }
+
+    .red   { color: #c0392b; }
+    .black { color: #1a1a1a; }
+
+    .corner {
+      font-size: 20px;
+      font-weight: bold;
+      line-height: 1.2;
+    }
+
+    .corner.bottom {
+      transform: rotate(180deg);
+      text-align: right;
+    }
+
+    .center-symbol {
+      font-size: 64px;
+      text-align: center;
+      line-height: 1;
+    }
+
+    .btn-card {
+      padding: 10px 28px;
+      font-size: 15px;
+      font-weight: bold;
+      background: rgba(255,255,255,0.15);
+      color: white;
+      border: 2px solid rgba(255,255,255,0.5);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn-card:hover {
+      background: rgba(255,255,255,0.28);
+      transform: scale(1.04);
+      color: white;
+    }
+
+    .btn-card:active {
+      transform: scale(0.97);
+    }
+  </style>
+</head>
+<body>
+
+  <p id="card-label">Cargando...</p>
+
+  <div class="playing-card">
+    <div class="corner" id="top-left"></div>
+    <div class="center-symbol" id="center"></div>
+    <div class="corner bottom" id="bottom-right"></div>
+  </div>
+
+  <button class="btn-card" onclick="generateCard()">🃏 Nueva carta</button>
+
+  <script>
+    const suits = [
+      { symbol: "♥", color: "red",   name: "Corazones" },
+      { symbol: "♦", color: "red",   name: "Diamantes" },
+      { symbol: "♠", color: "black", name: "Picas"     },
+      { symbol: "♣", color: "black", name: "Tréboles"  }
+    ];
+
+    const values = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"];
+
+    function generateCard() {
+      const suit  = suits[Math.floor(Math.random() * suits.length)];
+      const value = values[Math.floor(Math.random() * values.length)];
+
+      document.getElementById("top-left").innerHTML  = `<div>${value}</div><div>${suit.symbol}</div>`;
+      document.getElementById("top-left").className  = `corner ${suit.color}`;
+
+      document.getElementById("center").textContent  = suit.symbol;
+      document.getElementById("center").className    = `center-symbol ${suit.color}`;
+
+      document.getElementById("bottom-right").innerHTML = `<div>${value}</div><div>${suit.symbol}</div>`;
+      document.getElementById("bottom-right").className = `corner bottom ${suit.color}`;
+
+      document.getElementById("card-label").textContent = `${value} de ${suit.name}`;
+    }
+
+    window.onload = generateCard;
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
